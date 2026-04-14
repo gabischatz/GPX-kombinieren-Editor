@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ═══════════════════════════════════════════
+         SEO – Grundlegende Meta-Angaben
+    ═══════════════════════════════════════════ -->
+    <title>GPX-kombinieren-Editor</title>
+    <meta name="description" content="GPX-kombinieren-Editor zum Laden, Kombinieren, Bearbeiten und Exportieren von GPX-Routen mit Karte und Wegpunkten.">
+    <meta name="keywords" content="GPX, GPX Editor, GPX kombinieren, Route bearbeiten, Wegpunkte, Leaflet, GPS, Fahrrad">
+    <meta name="author" content="Lutz Müller (gabischatz)">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://gabischatz.de.cool/gpx-kombinieren/">
+
+    <meta name="license" content="CC BY-SA 4.0">
+    <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.de">
+
+    <!-- ═══════════════════════════════════════════
+         Open Graph – Vorschau in sozialen Netzwerken
+    ═══════════════════════════════════════════ -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GPX-kombinieren-Editor">
+    <meta property="og:description" content="GPX-Routen laden, kombinieren, bearbeiten und als neue GPX-Datei exportieren. Mit Karte, Wegpunkten und Demo-Strecken.">
+    <meta property="og:url" content="https://gabischatz.de.cool/gpx-kombinieren/">
+    <meta property="og:image" content="https://gabischatz.de.cool/gpx-kombinieren/preview.png">
+    <meta property="og:image:alt" content="Vorschau des GPX-kombinieren-Editors mit Karte und Routen">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:site_name" content="gabischatz.de.cool">
+
+    <!-- ═══════════════════════════════════════════
+         Twitter Card – Vorschau auf X / Twitter
+    ═══════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GPX-kombinieren-Editor">
+    <meta name="twitter:description" content="GPX-Routen laden, bearbeiten, kombinieren und exportieren.">
+    <meta name="twitter:image" content="https://gabischatz.de.cool/gpx-kombinieren/preview.png">
+    <meta name="twitter:image:alt" content="Vorschau des GPX-kombinieren-Editors">
+
+    <!-- ═══════════════════════════════════════════
+         Theme / Browserfarbe
+    ═══════════════════════════════════════════ -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="color-scheme" content="light dark">
+
+    <link rel="icon" type="image/png" href="favicon.png" sizes="256x256">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/gpxparser.js"></script>
+    <script src="js/togpx.js"></script>
+</head>
+<body>
+<header class="svgbox">
+    <div class="header-bar">
+        <div class="header-title-wrap">
+            <a href="./" title="Zur Hauptseite">
+                <h1>🏃 GPX-kombinieren-Editor v2.0 🚴</h1>
+            </a>
+        </div>
+        <div class="header-actions">
+            <button id="btn_load_demo" class="btn-demo-routes" type="button">🧪 Demo-Strecken laden</button>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <h3>📁 GPX Dateien hochladen (Drag & Drop)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div>
+            <div class="drop-zone" id="drop_zone_1" style="cursor: pointer;">
+                <span>📂 GPX 1 hier ablegen oder klicken<br><small>Blaue Route</small></span>
+            </div>
+            <input type="file" id="file_input_1" accept=".gpx" style="display:none">
+            <div class="route-controls">
+                <button id="btn_clear_route1" style="background:#dc3545;">❌ Route 1 löschen</button>
+                <button id="btn_reverse_route1" style="background:#17a2b8;">🔄 Route 1 umkehren</button>
+            </div>
+        </div>
+        <div>
+            <div class="drop-zone" id="drop_zone_2" style="cursor: pointer;">
+                <span>📂 GPX 2 hier ablegen oder klicken<br><small>Rote Route</small></span>
+            </div>
+            <input type="file" id="file_input_2" accept=".gpx" style="display:none">
+            <div class="route-controls">
+                <button id="btn_clear_route2" style="background:#dc3545;">❌ Route 2 löschen</button>
+                <button id="btn_reverse_route2" style="background:#17a2b8;">🔄 Route 2 umkehren</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h3>🗺️ Karte</h3>
+    <div class="segment-containers">
+        <div class="segment-card segment-blue" id="route1_selection">Route 1 noch nicht geladen</div>
+        <div class="segment-card segment-red" id="route2_selection">Route 2 noch nicht geladen</div>
+    </div>
+    <div id="map"></div>
+    <div class="route-controls">
+        <button id="btn_generate">🛣️ Route generieren</button>
+        <button id="btn_toggle_routes">🔄 Neue Route anzeigen</button>
+        <button id="btn_download" style="background:#28a745;">💾 GPX herunterladen</button>
+    </div>
+</div>
+
+<div id="waypoint-editor" class="container">
+    <h3>📍 Wegpunkt erstellen/bearbeiten</h3>
+    <div class="container-wegpunkt">
+        <input type="number" id="wp_lat" step="any" placeholder="Breitengrad" title="Latitude">
+        <input type="number" id="wp_ele" step="any" placeholder="Höhe (m)" title="Elevation"> 
+        <input type="number" id="wp_lon" step="any" placeholder="Längengrad" title="Longitude">
+
+        <input type="text" id="wp_name" placeholder="Name des Wegpunkts" title="Name">     
+        <div></div>
+        <select name="richtung" id="richtung" title="Klicken, um einzufügen">
+            <option value="Richtung ">Richtung:</option>
+            <option value="Start ">🚦 Start</option>
+            <option value="Ziel ">🏁 Ziel</option>
+            <option value="Parkplatz">🅿️ Parkplatz</option>
+            <option value="Toiletten">🚻 Toiletten</option>
+            <option value="Links halten ">↖️ Links halten</option>
+            <option value="Links abbiegen ">⬅️ Links abbiegen</option>
+            <option value="Scharf links abbiegen ">↩️ Scharf links abbiegen</option>
+            <option value="Rechts halten ">↗️ Rechts halten</option>
+            <option value="Rechts abbiegen ">➡️ Rechts abbiegen</option>
+            <option value="Scharf rechts abbiegen ">⤴️ Scharf rechts abbiegen</option>
+            <option value="Kreisverkehr 1. Abfahrt ">1️⃣🕐 1. Abfahrt</option>
+            <option value="Kreisverkehr 2. Abfahrt ">2️⃣🕓 2. Abfahrt</option>
+            <option value="Kreisverkehr 3. Abfahrt ">3️⃣🕖 3. Abfahrt</option>
+            <option value="Kreisverkehr 4. Abfahrt ">4️⃣🕘 4. Abfahrt</option>
+            <option value="Kreisverkehr 5. Abfahrt ">5️⃣🕛 5. Abfahrt</option>
+            <option value="<img src='' alt='' style='max-width: 100%; height: auto;'>">Bild einfügen</option>
+        </select>
+
+        <textarea id="wp_desc" placeholder="Beschreibung" title="Beschreibung" class="full-row"></textarea>
+
+        <select id="wp_sym" title="Symbol">
+            <option value="">Symbol wählen</option>
+            <option value="Emergency">🚑 Emergency</option>
+            <option value="Flag">🚩 Flagge</option>
+            <option value="Food">🍽️ Food</option>
+            <option value="Landmark">🏛️ Landmark</option>
+            <option value="Lodging">🏨 Lodging</option>
+            <option value="Nature">🌿 Nature</option>
+            <option value="Parkplatz">🅿️ Parkplatz</option>
+            <option value="Pin">📌 Pin</option>
+            <option value="POI">⭐ POI</option>
+            <option value="RoutePoint">🧭 RoutePoint</option>
+            <option value="Service">🧰 Service</option>
+            <option value="Square">⬜ Quadrat</option>
+            <option value="Telefon">📞 Telefon</option>
+            <option value="Toiletten">🚻 Toiletten</option>
+            <option value="Tourism">🎒 Tourism</option>
+            <option value="TrackPoint">📈 TrackPoint</option>
+            <option value="Transport">🚉 Transport</option>
+            <option value="TurnInstruction">↩️ TurnInstruction</option>
+            <option value="Viewpoint">🌅 Viewpoint</option>
+            <option value="Water">💧 Water</option>
+            <option value="Waypoint">📍 Waypoint</option>
+            <option value="WLAN">📶 WLAN</option>
+        </select>
+
+        <input type="url" id="wp_link" placeholder="Link (URL)">   
+
+        <select id="wp_type" title="Typ">
+            <option value="Waypoint">📍 Wegpunkt</option>
+            <option value="Anker">🪝 Anker</option>
+            <option value="Apotheke">💊 Apotheke</option>
+            <option value="Auto">🚗 Auto</option>
+            <option value="Bank">🏦 Bank</option>
+            <option value="Beenden">🛑 Beenden</option>
+            <option value="Bodentransport">🚚 Bodentransport</option>
+            <option value="Brücke">🌉 Brücke</option>
+            <option value="Campingplatz">🏕️ Campingplatz</option>
+            <option value="Dusche">🚿 Dusche</option>
+            <option value="Einkaufszentrum">🛍️ Einkaufszentrum</option>
+            <option value="Fernglas">🔭 Fernglas</option>
+            <option value="Garage">🏠 Garage</option>
+            <option value="Gebäude">🏢 Gebäude</option>
+            <option value="Gemischtwarenladen">🛒 Gemischtwarenladen</option>
+            <option value="Gipfel">⛰️ Gipfel</option>
+            <option value="Haus">🏡 Haus</option>
+            <option value="Hinweis">💡 Hinweis</option>
+            <option value="Hotel">🏨 Hotel</option>
+            <option value="Hütte">🛖 Hütte</option>
+            <option value="Informationen">ℹ️ Informationen</option>
+            <option value="Kaufhaus">🏬 Kaufhaus</option>
+            <option value="Checkpoint">✅ Kontrollpunkt</option>
+            <option value="Kreuzung">➕ Kreuzung</option>
+            <option value="Parkplatz">🅿️ Parkplatz</option>
+            <option value="POI">🏛️ Point of Interest</option>
+            <option value="Picknickplatz">🧺 Picknickplatz</option>
+            <option value="Radweg">🚴‍♂️ Radweg</option>
+            <option value="Restaurant">🍽️ Restaurant</option>
+            <option value="Strandstraße">🌴 Strandstraße</option>
+            <option value="Tankstelle">⛽ Tankstelle</option>
+            <option value="Telefon">☎️ Telefon</option>
+            <option value="Toiletten">🚻 Toiletten</option>
+            <option value="Trinkwasser">🚰 Trinkwasser</option>
+            <option value="Tunnel">🚇 Tunnel</option>
+            <option value="Unterkunft">🛏️ Unterkunft</option>
+            <option value="Unterstand">⛺ Unterstand</option>
+            <option value="Verbotene Zone">🚫 Verbotene Zone</option>
+            <option value="Food">🍎 Verpflegung</option>
+            <option value="Wald">🌲 Wald</option>
+            <option value="Water">💧 Wasser</option>
+        </select>
+    </div>
+    <div class="button-container">
+        <button id="btn_cancel_edit" style="display:none; background:#6c757d;">❌ Abbrechen</button>
+        <button id="btn_update_waypoint" style="display:none; background:#28a745;">✏️ Aktualisieren</button>
+        <button id="btn_add_waypoint">➕ Wegpunkt hinzufügen</button>
+    </div>
+</div>
+
+<div class="container">
+    <h3>📋 Wegpunkte 
+        <button id="btn_clear_waypoints" style="float:right; background:#dc3545;">🗑️ Alle löschen</button>
+    </h3>
+    <div id="waypoint_list">
+        <p><em>Noch keine Wegpunkte vorhanden.</em></p>
+    </div>
+</div>
+
+<div class="container">
+    <h3>📄 Generierte GPX</h3>
+    <textarea id="generated_gpx_output" readonly placeholder="Die generierte GPX-Route wird hier angezeigt..."></textarea>
+</div>
+
+<div id="download-dialog" class="dialog-overlay" style="display: none;">
+    <div class="dialog-content">
+        <div class="dialog-header">
+            <h3>🗂️ GPX-Datei herunterladen</h3>
+            <button class="dialog-close" onclick="hideDownloadDialog()">×</button>
+        </div>
+        <div class="dialog-body">
+            <div class="support-notice">
+                <div class="support-icon">☕</div>
+                <div class="support-text">
+                    <p><strong>Hat Ihnen dieses Tool geholfen?</strong></p>
+                    <p>Dieses Tool wird kostenlos angeboten und darf nicht auf anderen Websites veröffentlicht werden. 
+                       Wenn Sie es regelmäßig nutzen, erwägen Sie bitte eine kleine Spende für den Entwickler.</p>
+                </div>
+            </div>
+            <div class="support-options">
+                <a href="https://www.paypal.com/donate/?hosted_button_id=BEE2JU8H65H94" target="_blank" class="donate-button">
+                    ❤️ Mit PayPal unterstützen
+                </a>
+                <div class="download-actions">
+                    <button onclick="proceedWithDownload()" class="download-btn">
+                        📥 Trotzdem kostenlos herunterladen
+                    </button>
+                    <small>Keine Spende erforderlich</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/speech-dictation.js"></script>
+<script src="js/waypoint-map-handler.js"></script>
+<script src="js/gpx-editor.js"></script>
+<script src="js/waypoint-manager.js"></script>
+<script src="js/ui-controller.js"></script>
+<script src="js/scrollBehavior.js"></script>
+<script src="js/scrollTop.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const demoButton = document.getElementById('btn_load_demo');
+    if (!demoButton) return;
+
+    demoButton.addEventListener('click', async function () {
+        const originalText = demoButton.textContent;
+        demoButton.disabled = true;
+        demoButton.textContent = '⏳ Demo wird geladen...';
+
+        try {
+            const demoFiles = [
+                { url: new URL('./demo/Gelbe-Route.gpx', window.location.href).href, routeNum: 1, zoneId: 'drop_zone_1', label: 'Gelbe-Route.gpx' },
+                { url: new URL('./demo/Rote-Route.gpx', window.location.href).href, routeNum: 2, zoneId: 'drop_zone_2', label: 'Rote-Route.gpx' }
+            ];
+
+            if (!window.gpxEditor || typeof window.gpxEditor.loadGpx !== 'function') {
+                throw new Error('GPX-Editor ist noch nicht initialisiert.');
+            }
+
+            for (const demo of demoFiles) {
+                const response = await fetch(demo.url, { cache: 'no-store' });
+                if (!response.ok) {
+                    throw new Error('Demo-Datei konnte nicht geladen werden: ' + demo.url);
+                }
+
+                const content = await response.text();
+                const success = await window.gpxEditor.loadGpx(demo.routeNum, content);
+
+                if (!success) {
+                    throw new Error('Demo-GPX konnte nicht verarbeitet werden: ' + demo.label);
+                }
+
+                const zone = document.getElementById(demo.zoneId);
+                if (zone) {
+                    zone.innerHTML = '<strong>✅ ' + demo.label + '</strong><br>Demo-Datei erfolgreich geladen';
+                }
+            }
+
+            alert('Die beiden Demo-Strecken wurden geladen.');
+        } catch (error) {
+            console.error(error);
+            let msg = error.message || String(error);
+
+            if (msg.includes('Failed to fetch')) {
+                msg = 'Die Demo-Dateien konnten nicht geladen werden. Prüfe, ob der Ordner "demo" mit "Gelbe-Route.gpx" und "Rote-Route.gpx" wirklich neben der index.html auf dem Server liegt.';
+            }
+
+            alert('Fehler beim Laden der Demo-Strecken: ' + msg);
+        } finally {
+            demoButton.disabled = false;
+            demoButton.textContent = originalText;
+        }
+    });
+});
+</script>
+</body>
+</html>

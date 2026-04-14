@@ -1,0 +1,709 @@
+/* app.css – zusammengefasste Styles für das Repository */
+
+﻿/**
+ * Projekt: Alle Webseiten
+ * Version: 1.0.0
+ * Autor: Lutz Müller
+ * Programmiersprache: CSS
+ * Datum: 13.3.2025, 15:07:22
+ */
+/* ===================== SCROLLBAR STYLING ===================== */
+/* Gesamte Scrollbar */
+::-webkit-scrollbar {
+  width: 0px; /* Breite auf 0 setzen, um sie zu verstecken */
+  background: transparent; /* Optional: Hintergrund transparent machen */
+}
+
+/* Scrollbar-Thumb (der bewegliche Teil) */
+::-webkit-scrollbar-thumb {
+  background: transparent; /* Optional: Thumb transparent machen */
+}
+
+/* Scrollbar-Track (der Hintergrund, auf dem sich der Thumb bewegt) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Track transparent machen */
+	z-index: 1;
+}
+html {
+    scroll-behavior: smooth;
+}
+body {
+	overflow: hidden;
+	min-height: 100vh; 				/* Stelle sicher, dass der Body die volle Höhe einnimmt */	
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select:none;
+}
+
+input, textarea, p.hover-button {
+	user-select: text; /* Erlaubt die Textauswahl */
+	-webkit-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+}
+
+﻿/**
+ * Projekt: GPX-kombinieren-Editor
+ * Version: 1.0.0
+ * Programmiersprache: HTML, CSS, JavaScript
+ * Datum: 11.10.2025, 11:11:36
+ * gpx-editor.ccs
+ * Erstellt: Lutz Müller (2025)
+ */
+/**
+ * GPX-kombinieren-Editor Styles
+ * Version: 1.1.0
+ */
+ 
+/* Smooth Scrolling für die ganze Seite */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-size: xxx-large;
+}
+header a {
+    text-decoration: none;
+}
+.container {
+    background: white;
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.container-wegpunkt {
+  background: #f9fafc;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 20px 25px;
+  margin: 25px auto;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 25% auto 25% ;
+  gap: 0px 10px;
+  min-width: 95%;
+  box-sizing: border-box;
+} 
+
+
+/* Verbesserte Darstellung für den Wegpunkt-Editor Container */
+#waypoint-editor {
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+#waypoint-editor:target {
+    border-color: #007bff;
+    background-color: #f8f9fa;
+}
+
+input#wp_ele {
+    width: 30%;
+}
+
+.button-container {
+    text-align: right;
+}
+
+select#wp_type,
+select#wp_sym,
+select#richtung {
+    width: calc(100% + 25px);
+}
+
+input#wp_link {
+    min-width: 90%;
+    /* position: relative; */
+    /* left: 6px; */
+}
+
+.container-wegpunkt textarea.full-row {
+  grid-column: 1 / 4;
+  min-height: 90px;
+  resize: vertical;
+  font-family: 'Courier New', monospace;
+    min-width: 100%;
+} 
+
+/* Titel */
+.container-wegpunkt h3 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+
+/* Flexibles Grid-Layout */
+.container-wegpunkt > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+#map {
+    height: 500px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}
+
+input, textarea, select {
+    width: 100%;
+    max-width: 300px;
+    margin: 8px 0;
+    padding: 10px;
+    border: 2px solid #e1e1e1;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+input#route1_start ,
+input#route1_end , 
+input#route2_start ,
+input#route2_end {
+    width: 70% !important;
+}
+
+/* Verbesserte Schieberegler */
+input[type="range"] {
+    width: 100%;
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+input[type="range"]:hover {
+    opacity: 0.8;
+}
+
+/* Schieberegler Werte-Anzeige */
+.slider-value {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    margin-top: 2px;
+}
+
+/* Koordinaten-Popup Styling */
+.leaflet-popup-content {
+    margin: 8px 12px;
+}
+
+.coord-popup .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: 'Courier New', monospace;
+}
+
+#generated_gpx_output {
+  width: 100%;
+  min-width: 100%;
+  max-height: 80vh;
+  height: calc(100vh - 2rem);
+  overflow-y: auto;    /* Scrollbar nur bei Bedarf */
+  resize: none;
+  box-sizing: border-box;
+  display: block;
+}
+
+button {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+
+
+/* Popup-Button Styling */
+.leaflet-popup-content button {
+    margin: 2px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.leaflet-popup-content button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.waypoint-item {
+    background: #f8f9fa;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #007bff;
+    transition: all 0.3s;
+}
+
+/* Waypoint Marker Styles */
+.waypoint-marker-icon {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Sicherstellen, dass Wegpunkt-Marker über den Routen liegen */
+.waypoint-marker-icon {
+    z-index: 1000 !important;
+}
+
+/* Hover-Effekt für Wegpunkt-Marker */
+.waypoint-marker-icon:hover {
+    transform: scale(1.2);
+    transition: transform 0.2s ease;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+}
+
+/* Popup Styling */
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.leaflet-popup-content {
+    margin: 12px 16px;
+    line-height: 1.4;
+}
+
+/* Sicherstellen, dass Popups über allem liegen */
+.leaflet-popup {
+    z-index: 2000 !important;
+}
+
+.waypoint-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.segment-containers {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.segment-container {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+.segment-card {
+    background: #f8f9fa;
+    padding: 5px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.segment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.segment-blue h3 {
+    color: #0b5ed7;
+    margin-top: 0;
+    margin-bottom: 8px;
+    margin-left: 12px;
+}
+
+.segment-red h3 {
+    color: #dc3545;
+    margin-top: 0;
+    margin-bottom: 8px;
+    margin-left: 12px;
+}
+
+.segment-row {
+    display: flex;
+    gap: 6px;
+    margin-top: -16px;
+    justify-content: space-between;
+}
+
+.segment-field {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    margin-left: 12px;
+    align-items: center;
+}
+.segment-field label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.segment-field select {
+    padding: 8px 0px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+}
+        
+div#drop_zone_2 {
+    border: 2px dashed red !important;
+}
+
+.drop-zone {
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin: 10px 0;
+}
+
+.drop-zone:hover {
+    background: #e9f7fe;
+    border-color: #0056b3;
+}
+
+.route-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.route-controls button {
+    flex: 1;
+    min-width: 120px;
+}
+
+.selection-display {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+div#route1_selection,
+div#route2_selection {
+    width: 49%;
+}
+
+
+/* Download Dialog Styles */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.dialog-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    animation: dialog-appear 0.3s ease-out;
+}
+
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.dialog-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.dialog-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog-close:hover {
+    color: #333;
+    background: #f5f5f5;
+    border-radius: 50%;
+}
+
+.dialog-body {
+    padding: 25px;
+}
+
+.support-notice {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.support-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.support-text {
+    flex: 1;
+}
+
+.support-text p {
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+}
+
+.support-text p:last-child {
+    margin-bottom: 0;
+}
+
+.support-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.donate-button {
+    display: block;
+    text-align: center;
+    background: linear-gradient(45deg, #0070ba, #009cde);
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 112, 186, 0.3);
+}
+
+.donate-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 112, 186, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.download-actions {
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.download-btn {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.download-actions small {
+    color: #666;
+    font-size: 12px;
+}
+
+button#wp_desc_mic {
+    display: none;
+    position: fixed;
+    top: 14%;
+    right: 10%;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 99px !important;
+    background-color: yellowgreen !important;
+    border: solid 1px darkgreen !important;
+    color: darkgreen;
+    font-weight: 700 !important;
+}
+textarea#wp_desc.aktiv button#wp_desc_mic {
+    display:  !important;
+}
+@keyframes highlight-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+}
+
+
+@keyframes dialog-appear {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .segment-containers {
+        flex-direction: column;
+    }
+    
+    div#route1_selection,
+    div#route2_selection {
+        width: 100%;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    input, textarea, select {
+        max-width: 100%;
+    }
+            
+    .route-controls { 
+        flex-direction: column; 
+    }
+    
+    .dialog-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .support-notice {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .support-icon {
+        align-self: center;
+    }
+    
+    .donate-button,
+    .download-btn {
+        padding: 15px 10px;
+        font-size: 14px;
+    }
+}
+
+/* Repo-Überarbeitung */
+.header-bar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+}
+.header-actions {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+.btn-demo-routes {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color:#fff;
+    border:none;
+    padding:12px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    white-space:nowrap;
+}
+.btn-demo-routes:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+.header-title-wrap {
+    flex:1;
+    min-width:0;
+}
+@media (max-width: 768px) {
+    .header-bar {
+        flex-direction:column;
+        align-items:stretch;
+    }
+    .header-actions {
+        justify-content:flex-end;
+    }
+    .btn-demo-routes {
+        width:100%;
+    }
+}

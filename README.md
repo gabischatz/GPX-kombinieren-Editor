@@ -15,7 +15,7 @@ Oben können zwei GPX-Dateien per **Drag & Drop** oder per Klick geladen werden.
 
 Zusätzlich können über den Button **„Demo-Strecken laden“** zwei Beispielrouten geladen werden.
 
-Hinweis: Die in der App verwendeten Namen der Demo-Routen dienen nur der technischen Unterscheidung. Tatsächlich gibt es bei uns die **Rote Route**, die **Gelbe Route** und die **orangene Route**.
+Hinweis: Die in der App verwendeten Namen der Demo-Routen dienen nur der technischen Unterscheidung. Tatsächlich gibt es bei uns die  „**Rote Route**“, die „**Gelbe Route**“ und die „**Orange Route**“.
 ## 2. Strecken auf der Karte prüfen
 Nach dem Laden werden beide Routen auf der Karte angezeigt.
 
